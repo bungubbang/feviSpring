@@ -1,0 +1,34 @@
+{% extends "card/layout.html" %}
+
+{% block content %}
+        <content
+            has-header="true" has-footer="true" scroll="true" overflow-scroll="true"
+            class="cards-bg" >
+            <div class="list">
+                    <div class="card" >
+                        <div class="item item-body card-description-full">
+                            <img src="/static/img/fevi_mark.png"/>
+                            <p><a href="mailto:bungubbang57@gmail.com">bungubbang57@gmail.com</a></p>
+                            <p><a href="https://www.facebook.com/fevipage" target="_blank">https://www.facebook.com/fevipage</a></p>
+                            <br/>
+                            <h3>license link</h3>
+                            <p>http://ionicframework.com/</p>
+                            <p>http://icons8.com/</p>
+                            <br/>
+                            <h3>문의사항</h3>
+                            <br/>
+                            <div id="comments_plugin1"></div> 
+                        </div>
+                    </div>
+            </div>
+            <script src="http://comments.skplanetx.com/script/plugin.js"></script> 
+            <script type="text/javascript"> 
+            SKP.commentsPlugin({ 
+                // 댓글을 표시할 DOM element의 id 
+                target_id: 'comments_plugin1', 
+                op_app_key: '93826bf4-0daf-3050-9689-6137db81b4c5',
+                is_responsive: true
+            }); 
+            </script>
+        </content>
+{% endblock %}

@@ -1,0 +1,160 @@
+<!doctype html>
+<html id="ng-app" ng-app="fevi" lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:ng="http://angularjs.org">
+
+<head th:fragment="fevi_head">
+    <title>Fevi</title>
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
+    <link rel="shortcut icon" sizes="128x128" href="/static/img/ic_launcher.png"/>
+    <link rel="apple-touch-icon" href="/static/img/ic_launcher.png"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/ionic.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/fevi.css" />
+
+    <!--[if lte IE 8]>
+        <script src="/static/js/json2.js"></script>
+    <![endif]-->
+
+    <script src="/static/js/ionic.min.js"></script>
+    <script src="/static/js/jquery-1.10.2.min.js"></script>
+    <script src="/static/js/angular/angular.min.js"></script>
+    <script src="/static/js/angular/angular-animate.min.js"></script>
+    <script src="/static/js/angular-ui/angular-ui-router.min.js"></script>
+    <script src="/static/js/angular/angular-sanitize.min.js"></script>
+    <script src="/static/js/angular/angular-resource.min.js"></script>
+    <script src="/static/js/ionic-angular.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39699634-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <script type="text/javascript">
+        var tad_conf = {
+            targetId : 'footer-ad',
+            clientId : 'MX00045A5',
+            slotNo : 2
+        };
+    </script>
+    <script type="text/javascript" src="http://adddn.adotsolution.com/contents/sdk/js/tad.min.js"></script>
+</head>
+
+<body>
+    <div ng-controller="FeviMenuCtrl" id="content-body">
+        <side-menus>
+            <!-- Center content -->
+            <pane side-menu-content="">
+                <div class="bar bar-header bar-assertive">
+                    <i class="icon ion-navicon head-icon head-icon-left" ng-click="header_left()"></i>
+                    <img class="title head_img head_img_left" src="/static/img/head_fevi.png"/>
+                    <img class="title head_img head_img_right" th:src="${'/static/img/head_' + title + '.png}"/>
+                    <i class="icon ion-star head-icon head-icon-right" ng-click="header_right()"></i>
+                </div>
+
+                <div class="bar bar-footer" id="footer-ad">
+                </div>
+            </pane>
+
+            <!-- Left menu -->
+            <side-menu side="left" th:fragment="fevi_left_menu">
+                <content has-header="true">
+                    <img src="/static/img/fevi_mark.png"/>
+                    <div class="left-menu">
+                        <p class="left-menu-list" ng-click="openMenu('trend')">TREND</p>
+                        <div class="left-menu-line"></div>
+                        <p class="left-menu-list" ng-click="openMenu('music')">MUSIC</p>
+                        <div class="left-menu-line"></div>
+                        <p class="left-menu-list" ng-click="openMenu('sports')">SPORTS</p>
+                        <div class="left-menu-line"></div>
+                        <p class="left-menu-list" ng-click="openMenu('lol')">LOL</p>
+                        <div class="left-menu-line"></div>
+                    </div>
+                </content>
+            </side-menu>
+            <side-menu side="right" th:fragment="fevi_right_menu">
+                <div class="bar bar-header bar-stable">
+                    <h1 class="title">My Page</h1>
+                </div>
+                <div class='content has-header ionic-pseudo'>
+                    <label class="item item-input left-menu-search">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="search" placeholder="Search" input-enter="search" class="search-card" style="margin-left:17px;" />
+                    </label>
+                    <div class="list">
+                        <a class="item item-icon-left" href="/favorite">
+                            <i class="icon ion-heart favorite-icon right-icon"></i>
+                            Favorite
+                        </a>
+                        <a class="item item-icon-left" href="/contact">
+                            <i class="icon ion-chatbubble-working contactus-icon right-icon"></i>
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+            </side-menu>
+
+        </side-menus>
+    </div>
+
+    <body th:fragment="fevi_script">
+        <script type="text/javascript" th:inline="javascript">
+            /*<![CDATA[*/
+            var title = /*[[${title}]]*/ null,
+                    type  = /*[[${type}]]*/ null,
+                    feviuid = /*[[${uid}]]*/ null,
+                    favbusy = false,
+                    page = 0,
+                    favorite = [],
+                    isAndroid = function() {
+                        return typeof feviJs !== "undefined";
+                    },
+                    removeArrayElement = function(arr, item) {
+                        var index = $.inArray(item, arr);
+                        arr.splice(index, 1);
+                        return arr;
+                    };
+            /*]]>*/
+
+            if(isAndroid()) {
+                feviuid = feviJs.getUid();
+            } else {
+
+                if($.cookie('feviuid')) {
+                    feviuid = $.cookie('feviuid');
+                } else {
+                    var rand_s4 = function() {
+                                return Math.floor((1 + Math.random()) * 0x10000)
+                                        .toString(16)
+                                        .substring(1);
+                            },
+                            getUid = function() {
+                                return 'w-' + rand_s4() + rand_s4() + '-' + rand_s4() + '-' + rand_s4() + '-' +
+                                        rand_s4() + '-' + new Date().getTime();
+                            }
+
+                    feviuid = getUid();
+                    $.cookie('feviuid', feviuid, { expires: 365 });
+                }
+
+            }
+
+            $('.title').click(function(){
+                $('.scroll-content').scrollTop(0);
+            });
+
+        </script>
+        <script src="/static/js/fevi-angular.js"></script>
+    </body>
+
+
+</body>
+</html>

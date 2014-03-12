@@ -1,0 +1,47 @@
+<!doctype html>
+<html id="ng-app" ng-app="fevi" lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:ng="http://angularjs.org">
+<head th:include="layout::fevi_head">
+</head>
+
+<body>
+<div ng-controller="FeviMenuCtrl" id="content-body">
+    <side-menus>
+
+        <side-menu side="left" th:include="layout::fevi_left_menu"></side-menu>
+        <side-menu side="right" th:include="layout::fevi_right_menu"></side-menu>
+        <!-- Center content -->
+        <pane side-menu-content="">
+            <div class="bar bar-header bar-assertive">
+                <i class="icon ion-navicon head-icon head-icon-left" ng-click="header_left()"></i>
+                <img class="title head_img head_img_left" src="/static/img/head_fevi.png"/>
+                <img class="title head_img head_img_right" th:src="${'/static/img/head_' + title + '.png'}"/>
+                <i class="icon ion-star head-icon head-icon-right" ng-click="header_right()"></i>
+            </div>
+
+
+
+            <content
+                    has-header="true" has-footer="true" scroll="true"
+                    class="cards-bg"  on-infinite-scroll="loadMore" th:if="${isFevi}">
+                <div class="cardList">
+                </div>
+            </content>
+            <content
+                    has-header="true" has-footer="true" scroll="true" overflow-scroll="true"
+                    class="cards-bg" when-scrolled="attachCards()" th:unless="${isFevi}">
+                <div class="cardList">
+                </div>
+            </content>
+
+
+
+            <div class="bar bar-footer" id="footer-ad">
+            </div>
+        </pane>
+    </side-menus>
+</div>
+
+<body th:include="layout::fevi_script">
+</body>
+</body>
+</html>

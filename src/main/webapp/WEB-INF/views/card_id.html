@@ -1,0 +1,106 @@
+{% extends "card/layout.html" %}
+{% block meta %}
+<meta property="og:title" content="Fevi - 페이스북 비디오^^"/> 
+<meta property="og:type" content="website"/> 
+<meta property="og:url" content="http://fevi-app.sungyong.jung.cloulu.com/{{title}}/card?id={{card.id}}"/> 
+<meta property="og:image" content="{{ card.picture }}"/>
+<meta property="og:description" content="{{ card.description }}"/>
+{% endblock %}
+
+{% block content %}
+        <content
+            has-header="true" has-footer="true" scroll="true" overflow-scroll="true"
+            class="cards-bg" >
+            <div class="list">
+                    <div class="card" >
+                        <input type="hidden" value="{{card.id}}"/>
+                        <input type="hidden" href="{{card.source}}"/>
+                        <div class="item item-avatar">
+                            <img src='{{card.profile_image}}' />
+                            <h2>{{card.name}}</h2>
+                            <p>{{card.updated_time| datetimeformat}}</p>
+                        </div>
+                        <div class="item item-body card_image" >
+                            <a href="javascript:void(0)" class="play_button" onclick="play(this); return false;">
+                                <img src="/static/img/play_button.png" />
+                            </a>
+                            <img class="card_img" src="{{card.picture}}">
+                        </div>
+                        <div class="item item-body card-description-full">
+                            <pre>{{card.description}}</pre>
+                        </div>
+                        <div class="item tabs tabs-secondary tabs-icon-left" >
+                            <a class="tab-item" href="https://www.facebook.com/{{card.id}}" target="_blank">
+                                <i class="icon ion-thumbsup"></i>
+                                &nbsp;Go to Facebook
+                            </a>
+                            <a class="tab-item"
+                                href="javascript:share('{{title}}','{{card.description}}','{{card.id}}'); return false;">
+                                <i class="icon ion-share"></i>
+                                Share
+                            </a>
+                        </div>
+                        <div class="item item-body" >
+                            <h3>Comments</h3>
+                            <br/>
+                            <div id="comments_plugin1"></div> 
+                        </div>
+                    </div>
+            </div>
+            <script src="http://comments.skplanetx.com/script/plugin.js"></script> 
+            <script type="text/javascript"> 
+            SKP.commentsPlugin({ 
+                // 댓글을 표시할 DOM element의 id 
+                target_id: 'comments_plugin1', 
+                op_app_key: '93826bf4-0daf-3050-9689-6137db81b4c5',
+                is_responsive: true
+            }); 
+
+            var play = function(div) {
+
+                var parent = $(div).parent();
+                var data = parent.parent().children();
+                var id = data[0].value;
+                var source = $(data[1]).attr('href');
+
+                if(isAndroid()) {
+                    feviJs.play(source);
+                } else {
+                    playWeb(div, id, source, parent);
+                }
+
+            }
+
+            var playWeb = function(div, id, source, parent) {
+
+                $(div).next().remove();
+                $(div).remove();
+                var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+                if(ismobile){
+                    parent.prepend("<div class='item item-body card_video'>" + 
+                                    "<video class='card_video_player' controls autoplay>" +
+                                        "<source src='" + source + "' type='video/mp4'>" +
+                                        "<object data='" + source + "'>" +
+                                            "<embed src='https://www.facebook.com/video/embed?video_id=" + id + "'>" +
+                                        "</object>" +
+                                    "</video>" +
+                                "</div>");
+                } else {
+                    parent.prepend("<div class='item item-body card_video'>" + 
+                                    "<iframe src='https://www.facebook.com/video/embed?video_id=" + id + "' width='500' height='300' frameborder='0'></iframe>" +
+                                "</div>");
+                }    
+            }
+
+            var share = function(title, description, id) {
+                if(isAndroid()) {
+                    description = description.substr(0,30) + "...";
+                    var text = "[Fevi] " + description + " \n http://fe-vi.com/" + title + "/card?id=" + id;
+                    feviJs.share(text);
+                } else {
+                    window.open("https://www.facebook.com/sharer/sharer.php?u=http://fe-vi.com/" + title + "/card?id=" + id);
+                }
+            }
+            </script>
+        </content>
+{% endblock %}
