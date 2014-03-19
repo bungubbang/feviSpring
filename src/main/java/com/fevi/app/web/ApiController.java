@@ -53,6 +53,10 @@ public class ApiController {
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public User postUser(User user) {
         User byUid = userRepository.findByUid(user.getUid());
+        if (byUid == null) {
+            byUid = userRepository.save(user);
+        }
+
         byUid.setFavorite(user.getFavorite());
         return userRepository.save(byUid);
     }
