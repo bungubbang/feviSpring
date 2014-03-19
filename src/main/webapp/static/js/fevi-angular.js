@@ -172,7 +172,7 @@ ng.directive('inputEnter', function() {
 var initCard = function(Cards, $scope) {
 
     $.get('/api/user',{"uid":feviuid}, function(data) {
-        favorite = (data !== undefined || data.length !== 0) ? data.favorite.split(",") : [];
+        favorite = (data !== undefined && data.length !== 0) ? data.favorite.split(",") : [];
         if(type ==='cards') {
             $scope.cards = getNewCards(Cards, $scope, 0);
         } else if(type === 'favorite') {
