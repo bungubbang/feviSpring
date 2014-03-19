@@ -33,11 +33,16 @@ public class FeviController {
         return userAgent.contains("Fevi") ? 1:0;
     }
 
+//    @RequestMapping("/")
+//    public RedirectView intro() {
+//        RedirectView rv = new RedirectView("/trend");
+//        rv.setExposeModelAttributes(false);
+//        return rv;
+//    }
+
     @RequestMapping("/")
-    public RedirectView intro() {
-        RedirectView rv = new RedirectView("/trend");
-        rv.setExposeModelAttributes(false);
-        return rv;
+    public String intro(){
+        return "templates/layout";
     }
 
     @RequestMapping("/trend")

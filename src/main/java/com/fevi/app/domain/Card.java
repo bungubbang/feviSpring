@@ -111,17 +111,20 @@ public class Card {
     }
 
     public String getUpdated_time() {
-        return updated_time;
+        return updated_time.split("T")[0] + " " + updated_time.split("T")[1].split("\\+")[0];
     }
     public void setUpdated_time(String updated_time) {
-        this.updated_time = updated_time.split("T")[0] + " " + updated_time.split("T")[1].split("\\+")[0];;
+        this.updated_time = updated_time;
     }
 
     public String getCreated_time() {
+        if(created_time != null) {
+            return created_time.split("T")[0] + " " + created_time.split("T")[1].split("\\+")[0];
+        }
         return created_time;
     }
     public void setCreated_time(String created_time) {
-        this.created_time = created_time.split("T")[0] + " " + created_time.split("T")[1].split("\\+")[0];
+        this.created_time = created_time;
     }
 
     @Override

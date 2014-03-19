@@ -55,8 +55,7 @@
             <pane side-menu-content="">
                 <div class="bar bar-header bar-assertive">
                     <i class="icon ion-navicon head-icon head-icon-left" ng-click="header_left()"></i>
-                    <img class="title head_img head_img_left" src="/static/img/head_fevi.png"/>
-                    <img class="title head_img head_img_right" th:src="${'/static/img/head_' + title + '.png}"/>
+                    <img class="title head_img head_img_right" th:src="${'/static/img/theme/main_menu_' + title + '.png}"/>
                     <i class="icon ion-star head-icon head-icon-right" ng-click="header_right()"></i>
                 </div>
 
@@ -66,40 +65,32 @@
 
             <!-- Left menu -->
             <side-menu side="left" th:fragment="fevi_left_menu">
-                <content has-header="true">
-                    <img src="/static/img/fevi_mark.png"/>
-                    <div class="left-menu">
-                        <p class="left-menu-list" ng-click="openMenu('trend')">TREND</p>
-                        <div class="left-menu-line"></div>
-                        <p class="left-menu-list" ng-click="openMenu('music')">MUSIC</p>
-                        <div class="left-menu-line"></div>
-                        <p class="left-menu-list" ng-click="openMenu('sports')">SPORTS</p>
-                        <div class="left-menu-line"></div>
-                        <p class="left-menu-list" ng-click="openMenu('lol')">LOL</p>
-                        <div class="left-menu-line"></div>
-                    </div>
+                <content has-header="false">
+                    <img class="left-title" src="/static/img/theme/left_menu_title.png"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/left_menu_trend.png" ng-click="openMenu('trend')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/left_menu_music.png" ng-click="openMenu('music')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/left_menu_sports.png" ng-click="openMenu('sports')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/left_menu_lol.png" ng-click="openMenu('lol')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
                 </content>
             </side-menu>
             <side-menu side="right" th:fragment="fevi_right_menu">
-                <div class="bar bar-header bar-stable">
-                    <h1 class="title">My Page</h1>
-                </div>
-                <div class='content has-header ionic-pseudo'>
+                <content has-header="false">
+                    <img class="left-title" src="/static/img/theme/mypage.png"/>
                     <label class="item item-input left-menu-search">
                         <i class="icon ion-search placeholder-icon"></i>
-                        <input type="search" placeholder="Search" input-enter="search" class="search-card" style="margin-left:17px;" />
+                        <input type="search" input-enter="search" class="search-card" style="margin-left:17px;" />
                     </label>
-                    <div class="list">
-                        <a class="item item-icon-left" href="/favorite">
-                            <i class="icon ion-heart favorite-icon right-icon"></i>
-                            Favorite
-                        </a>
-                        <a class="item item-icon-left" href="/contact">
-                            <i class="icon ion-chatbubble-working contactus-icon right-icon"></i>
-                            Contact Us
-                        </a>
-                    </div>
-                </div>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/right_menu_favorite.png" ng-click="openMenu('favorite')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                    <img class="left-menu" src="/static/img/theme/right_menu_contact.png" ng-click="openMenu('contact')"/>
+                    <img class="left-bar" src="/static/img/theme/left_menu_bar.png"/>
+                </content>
             </side-menu>
 
         </side-menus>

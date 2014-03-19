@@ -28,10 +28,10 @@ ng.factory('Cards', function($resource, $q) {
             return q.promise;
         },
         search: function(keyword) {
-            Cards = $resource('/api/search', {keyword:'@keyword'});
+            Cards = $resource('/api/search', {keyword:'@keyword'}, {'query': {method: 'GET', isArray: true}});
             var q = $q.defer();
             Cards.get({
-                keyword: keyword,
+                keyword: keyword
             }, function(resp) {
             q.resolve(resp);
             }, function(err) {
@@ -39,19 +39,6 @@ ng.factory('Cards', function($resource, $q) {
             });
 
             return q.promise;
-        },
-        favorite: function(items) {
-            Cards = $resource('/api/favorite', {items:'@items'});
-            var q = $q.defer();
-            Cards.get({
-                items: items,
-            }, function(resp) {
-            q.resolve(resp);
-            }, function(err) {
-            q.reject(err);
-            });
-
-            return q.promise;    
         }
     }
 });
@@ -75,22 +62,23 @@ ng.controller('FeviMenuCtrl', function($scope, $timeout, Cards, $ionicLoading) {
 
     $scope.search = function(keyword) {
         if(keyword=== '') { location.reload(); }
-        
-        Cards.search(keyword).then(function(cards) {
-                if(!cards.content.length) {
-                    alert('검색 결과가 없습니다.');
-                } else {
-                    for(i in cards.content) {
-                        cardHtml(cards.content[i]);
-                    }
-                    $scope.$broadcast('scroll.resize');
-                    $scope.busy = true;
-                    $('.search-card').val('');
-                    $('.search-card').blur();
-                    $scope.sideMenuController.toggleRight();
-                    $('.scroll-content').scrollTop(0);
+
+        $.get('/api/search', {keyword:keyword}, function(cards) {
+            if(!cards.length) {
+                alert('검색 결과가 없습니다.');
+            } else {
+                $('.cardList').empty();
+                for(i in cards) {
+                    cardHtml(cards[i]);
                 }
-            });
+                $scope.$broadcast('scroll.resize');
+                $scope.busy = true;
+                $('.search-card').val('');
+                $('.search-card').blur();
+                $scope.sideMenuController.toggleRight();
+                $('.scroll-content').scrollTop(0);
+            }
+        });
     };
 
     $scope.favorite = function(id) {
@@ -137,7 +125,7 @@ ng.controller('FeviMenuCtrl', function($scope, $timeout, Cards, $ionicLoading) {
 
         page++;
         Cards.load(title, page).then(function(cards) {
-            for(i in cards.content) {
+            for(var i in cards.content) {
                 cardHtml(cards.content[i]);
             }
             $scope.$broadcast('scroll.resize');
@@ -184,8 +172,7 @@ ng.directive('inputEnter', function() {
 var initCard = function(Cards, $scope) {
 
     $.get('/api/user',{"uid":feviuid}, function(data) {
-        favorite = (data.result !== undefined) ? data.result.favorite.split(",") : [];
-
+        favorite = (data !== undefined) ? data.favorite.split(",") : [];
         if(type ==='cards') {
             $scope.cards = getNewCards(Cards, $scope, 0);
         } else if(type === 'favorite') {
@@ -206,13 +193,13 @@ var getNewCards = function(Cards, $scope, page) {
 
 var getFavoriteCards = function(Cards, $scope) {
     if(favorite.length !== 0) {
-        Cards.favorite(favorite.toString()).then(function(cards) {
-                for(i in cards.content) {
-                    cardHtml(cards.content[i]);
-                }
-                $scope.$broadcast('scroll.resize');
-                checkFavorite(cards.content, favorite);
-            });
+        $.get('/api/favorite', {items:favorite.toString()}, function(cards){
+            for(i in cards) {
+                cardHtml(cards[i]);
+            }
+            $scope.$broadcast('scroll.resize');
+            checkFavorite(cards, favorite);
+        });
     } else {
         alert('즐겨찾기 항목이 없습니다.');
     }
@@ -260,6 +247,7 @@ var checkFavorite = function(Cards, items) {
             for(var y in items ) {
                 if(Cards[x].id === items[y]) {
                     $(document.getElementById(items[y])).attr('class', 'tab-item favorite');
+                    $(document.getElementById(items[y])).attr('class', 'tab-item favorite').children().attr('src','/static/img/theme/favorite_enable.png');
                 }
             }
         }
@@ -331,12 +319,10 @@ var cardHtml = function(card) {
                     "</div>" +
                     "<div class='item tabs tabs-secondary tabs-icon-left card-bottom-menu' >" +
                         "<a class='tab-item' id='" + card.id + "' onclick='cardFavorite(" + card.id + ");'>" +
-                            "<i class='icon ion-heart card-icon'></i>" +
-                            "&nbsp;Favorite" +
+                              "<img class='favorite-button' src='/static/img/theme/favorite.png'/>" +
                         "</a>" +
                         "<a class='tab-item' onclick='cardDetail(" + card.id + ")'>" +
-                            "<i class='icon ion-forward'></i>" +
-                            "&nbsp;자세히 보기" +
+                              "<img class='view-button' src='/static/img/theme/view_more.png'/>" +
                         "</a>" +
                     "</div>" +
                 "</div>";
@@ -356,18 +342,18 @@ var cardFavorite = function(id) {
         _gaq.push(['_trackEvent', 'Favorite', 'click', id]);
 
         if($('#' + id).attr('class') === 'tab-item') {
-            
             favorite.push(id);
             $.post('/api/user',{"uid":feviuid, "favorite":favorite.toString()}, function(){
                 $('#' + id).attr('class', 'tab-item favorite');
+                $('#' + id).children().attr('src','/static/img/theme/favorite_enable.png');
                 favbusy = false;
             });
 
         } else {
-
             favorite = removeArrayElement(favorite, id.toString());
             $.post('/api/user',{"uid":feviuid, "favorite":favorite.toString()}, function(){
                 $('#' + id).attr('class', 'tab-item');
+                $('#' + id).children().attr('src','/static/img/theme/favorite.png');
                 favbusy = false;
             });
 

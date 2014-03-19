@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +30,6 @@ public class ApiController {
     @RequestMapping("{menu}/today")
     public Page<Card> todayCard(@PathVariable String menu, @RequestParam(defaultValue = "0") Integer page) {
         PageRequest pageRequest = new PageRequest(page, PAGE_SIZE, new Sort(Sort.Direction.DESC, "updated_time"));
-
         return cardRepository.findByCategory(menu, pageRequest);
     }
 
@@ -42,8 +40,9 @@ public class ApiController {
     }
 
     @RequestMapping("favorite")
-    public List<Card> favoriteCard(@RequestParam List<String> keyword){
-        return cardRepository.findByListId(keyword);
+    public List<Card> favoriteCard(@RequestParam List<String> items){
+        List<Card> byListId = cardRepository.findByListId(items);
+        return byListId;
     }
 
     @RequestMapping(value = "user", method = RequestMethod.GET)
@@ -52,12 +51,10 @@ public class ApiController {
     }
 
     @RequestMapping(value = "user", method = RequestMethod.POST)
-    public String postUser(@RequestParam User user) {
+    public User postUser(User user) {
         User byUid = userRepository.findByUid(user.getUid());
         byUid.setFavorite(user.getFavorite());
-        userRepository.save(byUid);
-
-        return "favorite";
+        return userRepository.save(byUid);
     }
 
 

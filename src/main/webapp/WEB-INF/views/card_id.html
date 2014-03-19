@@ -1,41 +1,56 @@
-{% extends "card/layout.html" %}
-{% block meta %}
-<meta property="og:title" content="Fevi - 페이스북 비디오^^"/> 
-<meta property="og:type" content="website"/> 
-<meta property="og:url" content="http://fevi-app.sungyong.jung.cloulu.com/{{title}}/card?id={{card.id}}"/> 
-<meta property="og:image" content="{{ card.picture }}"/>
-<meta property="og:description" content="{{ card.description }}"/>
-{% endblock %}
+<!doctype html>
+<html id="ng-app" ng-app="fevi" lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:ng="http://angularjs.org">
+<head th:include="layout::fevi_head">
+</head>
+<head>
+    <meta property="og:title" content="Fevi - 페이스북 비디오^^"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" th:content="${card.picture}"/>
+    <meta property="og:description" th:content="${ card.description }"/>
+</head>
 
-{% block content %}
+<body>
+<div ng-controller="FeviMenuCtrl" id="content-body">
+    <side-menus>
+
+        <side-menu side="left" th:include="layout::fevi_left_menu"></side-menu>
+        <side-menu side="right" th:include="layout::fevi_right_menu"></side-menu>
+        <!-- Center content -->
+        <pane side-menu-content="">
+            <div class="bar bar-header bar-assertive">
+                <i class="icon ion-navicon head-icon head-icon-left" ng-click="header_left()"></i>
+                <img class="head_img head_img_right" th:src="${'/static/img/theme/main_menu_' + title + '.png'}" />
+                <i class="icon ion-star head-icon head-icon-right" ng-click="header_right()"></i>
+            </div>
+
         <content
             has-header="true" has-footer="true" scroll="true" overflow-scroll="true"
             class="cards-bg" >
             <div class="list">
                     <div class="card" >
-                        <input type="hidden" value="{{card.id}}"/>
-                        <input type="hidden" href="{{card.source}}"/>
+                        <input type="hidden" th:value="${card.id}"/>
+                        <input type="hidden" th:value="${card.source}"/>
                         <div class="item item-avatar">
-                            <img src='{{card.profile_image}}' />
-                            <h2>{{card.name}}</h2>
-                            <p>{{card.updated_time| datetimeformat}}</p>
+                            <img th:src='${card.profile_image}' />
+                            <h2 th:text="${card.name}"></h2>
+                            <p th:text="${card.updated_time}"></p>
                         </div>
                         <div class="item item-body card_image" >
                             <a href="javascript:void(0)" class="play_button" onclick="play(this); return false;">
                                 <img src="/static/img/play_button.png" />
                             </a>
-                            <img class="card_img" src="{{card.picture}}">
+                            <img class="card_img" th:src="${card.picture}" />
                         </div>
                         <div class="item item-body card-description-full">
-                            <pre>{{card.description}}</pre>
+                            <pre th:text="${card.description}"></pre>
                         </div>
                         <div class="item tabs tabs-secondary tabs-icon-left" >
-                            <a class="tab-item" href="https://www.facebook.com/{{card.id}}" target="_blank">
+                            <a class="tab-item" th:href="${'https://www.facebook.com/' + card.id }" target="_blank">
                                 <i class="icon ion-thumbsup"></i>
                                 &nbsp;Go to Facebook
                             </a>
                             <a class="tab-item"
-                                href="javascript:share('{{title}}','{{card.description}}','{{card.id}}'); return false;">
+                                href="javascript:share()">
                                 <i class="icon ion-share"></i>
                                 Share
                             </a>
@@ -48,59 +63,52 @@
                     </div>
             </div>
             <script src="http://comments.skplanetx.com/script/plugin.js"></script> 
-            <script type="text/javascript"> 
-            SKP.commentsPlugin({ 
-                // 댓글을 표시할 DOM element의 id 
-                target_id: 'comments_plugin1', 
-                op_app_key: '93826bf4-0daf-3050-9689-6137db81b4c5',
-                is_responsive: true
-            }); 
+            <script type="text/javascript" th:inline="javascript">
+                /*<![CDATA[*/
+                var title = /*[[${title}]]*/ null,
+                    card = /*[[${card}]]*/ null;
+                /*]]>*/
+                SKP.commentsPlugin({
+                    // 댓글을 표시할 DOM element의 id
+                    target_id: 'comments_plugin1',
+                    op_app_key: '93826bf4-0daf-3050-9689-6137db81b4c5',
+                    is_responsive: true
+                });
 
-            var play = function(div) {
+                var play = function(div) {
 
-                var parent = $(div).parent();
-                var data = parent.parent().children();
-                var id = data[0].value;
-                var source = $(data[1]).attr('href');
+                    var parent = $(div).parent();
+                    var data = parent.parent().children();
+                    var id = data[0].value;
+                    var source = $(data[1]).attr('href');
 
-                if(isAndroid()) {
-                    feviJs.play(source);
-                } else {
-                    playWeb(div, id, source, parent);
+                    if(isAndroid()) {
+                        feviJs.play(source);
+                    } else {
+                        playWeb(div, id, source, parent);
+                    }
+
                 }
 
-            }
-
-            var playWeb = function(div, id, source, parent) {
-
-                $(div).next().remove();
-                $(div).remove();
-                var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
-                if(ismobile){
-                    parent.prepend("<div class='item item-body card_video'>" + 
-                                    "<video class='card_video_player' controls autoplay>" +
-                                        "<source src='" + source + "' type='video/mp4'>" +
-                                        "<object data='" + source + "'>" +
-                                            "<embed src='https://www.facebook.com/video/embed?video_id=" + id + "'>" +
-                                        "</object>" +
-                                    "</video>" +
-                                "</div>");
-                } else {
-                    parent.prepend("<div class='item item-body card_video'>" + 
-                                    "<iframe src='https://www.facebook.com/video/embed?video_id=" + id + "' width='500' height='300' frameborder='0'></iframe>" +
-                                "</div>");
-                }    
-            }
-
-            var share = function(title, description, id) {
-                if(isAndroid()) {
-                    description = description.substr(0,30) + "...";
-                    var text = "[Fevi] " + description + " \n http://fe-vi.com/" + title + "/card?id=" + id;
-                    feviJs.share(text);
-                } else {
-                    window.open("https://www.facebook.com/sharer/sharer.php?u=http://fe-vi.com/" + title + "/card?id=" + id);
+                var share = function() {
+                    if(isAndroid()) {
+                        card.description = card.description.substr(0,30) + "...";
+                        var text = "[Fevi] " + card.description + " \n http://fe-vi.com/" + title + "/card?id=" + card.id;
+                        feviJs.share(text);
+                    } else {
+                        window.open("https://www.facebook.com/sharer/sharer.php?u=http://fe-vi.com/" + title + "/card?id=" + card.id);
+                    }
                 }
-            }
             </script>
         </content>
-{% endblock %}
+
+<div class="bar bar-footer" id="footer-ad">
+</div>
+</pane>
+</side-menus>
+</div>
+
+<body th:include="layout::fevi_script">
+</body>
+</body>
+</html>
