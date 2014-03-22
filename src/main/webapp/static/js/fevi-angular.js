@@ -202,6 +202,7 @@ var getFavoriteCards = function(Cards, $scope) {
         });
     } else {
         alert('즐겨찾기 항목이 없습니다.');
+        history.back();
     }
 }
 

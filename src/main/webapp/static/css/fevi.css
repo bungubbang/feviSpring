@@ -9,7 +9,10 @@
 }
 
 .head_img {
-    margin: 10px auto !important;
+    position: absolute !important;
+    left: 50% !important;
+    margin-left: -10000px;
+    margin-top: 10px !important;
     height: 16px;
 }
 
@@ -34,8 +37,8 @@
     margin: 10px 10px;
 }
 
-.tab-item .favorite-button {margin: 16px;}
-.tab-item .view-button {margin: 13px;}
+.tab-item .favorite-button {margin: 16px;height: 14px;}
+.tab-item .view-button {margin: 14px;height: 17px;}
 
 .card_image {
     background-color: #111111;

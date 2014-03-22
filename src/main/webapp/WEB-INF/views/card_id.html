@@ -16,12 +16,8 @@
         <side-menu side="left" th:include="layout::fevi_left_menu"></side-menu>
         <side-menu side="right" th:include="layout::fevi_right_menu"></side-menu>
         <!-- Center content -->
-        <pane side-menu-content="">
-            <div class="bar bar-header bar-assertive">
-                <i class="icon ion-navicon head-icon head-icon-left" ng-click="header_left()"></i>
-                <img class="head_img head_img_right" th:src="${'/static/img/theme/main_menu_' + title + '.png'}" />
-                <i class="icon ion-star head-icon head-icon-right" ng-click="header_right()"></i>
-            </div>
+        <pane side-menu-content="" style="z-index: 1;">
+            <div class="bar bar-header bar-assertive" th:include="layout::fevi_center_menu"></div>
 
         <content
             has-header="true" has-footer="true" scroll="true" overflow-scroll="true"

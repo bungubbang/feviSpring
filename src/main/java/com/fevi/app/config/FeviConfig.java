@@ -44,10 +44,10 @@ public class FeviConfig extends WebMvcConfigurerAdapter {
         return characterEncodingFilter;
     }
 
-    @Bean
-    public SupportBrowserFilter supportBrowserFilter() {
-        return new SupportBrowserFilter();
-    }
+//    @Bean
+//    public SupportBrowserFilter supportBrowserFilter() {
+//        return new SupportBrowserFilter();
+//    }
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
