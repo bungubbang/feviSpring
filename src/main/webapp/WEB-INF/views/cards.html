@@ -22,6 +22,28 @@
                     has-header="true" has-footer="true" scroll="true" overflow-scroll="true"
                     class="cards-bg" when-scrolled="attachCards()" th:unless="${isFevi}">
                 <div class="cardList">
+                    <div class="card not-support-alert" onclick="moveMarket();" style="display: none;">
+                        <div class="item item-text-wrap">
+                            <p><li class="ion-information-circled"></li>&nbsp;지원하지 않는 브라우져 입니다.</p>
+                            <p>원활한 이용을 위해서 <span style="text-decoration: underline; color: #145fd7;">Fevi app</span>을 이용해 주시기 바랍니다.</p>
+                        </div>
+                    </div>
+                    <div class="card go-market-android" onclick="moveMarket();" style="display: none;">
+                        <div class="item item-text-wrap">
+                            <p>
+                            <li class="ion-home"></li>
+                            &nbsp;<span style="text-decoration: underline; color: #145fd7;">안드로이드 앱으로 이동</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card go-chrome" style="display: none;">
+                        <div class="item item-text-wrap">
+                            <a href="http://www.google.com/chrome"><p>
+                                <p><li class="ion-information-circled"></li>&nbsp;지원하지 않는 브라우져 입니다.</p>
+                                <p>원활한 이용을 위해서 <span style="text-decoration: underline; color: #145fd7;">크롬</span>에서 이용해 주시기 바랍니다.</p>
+                            </p></a>
+                        </div>
+                    </div>
                 </div>
             </content>
 
@@ -35,5 +57,27 @@
 
 <body th:include="layout::fevi_script">
 </body>
+<script>
+
+    var ua = navigator.userAgent;
+
+    var isAndroid = ua.indexOf('Android') > 0;
+    var isFevi = ua.indexOf('Fevi') > 0;
+    var isIOS = (ua.indexOf('iPhone') > 0 || ua.indexOf('iPad') > 0);
+    var isIE = ua.indexOf('MSIE') > 0;
+    var isNotSupport = (ua.indexOf('NAVER') > 0 || ua.indexOf('DaumApps') > 0);
+
+    if(isAndroid) {
+        if(isNotSupport) {
+            $('.not-support-alert').show();
+            $('.go-market-android').show();
+        } else if(!isFevi) {
+            $('.go-market-android').show();
+        }
+    } else if(isIE) {
+        $('.go-chrome').show();
+    }
+
+</script>
 </body>
 </html>

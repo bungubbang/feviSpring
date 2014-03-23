@@ -361,3 +361,7 @@ var cardFavorite = function(id) {
         }    
     }
 
+var moveMarket = function() {
+    location.href="market://details?id=com.app.fevi";
+}
+
