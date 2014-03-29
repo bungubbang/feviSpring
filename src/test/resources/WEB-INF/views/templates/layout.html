@@ -1,0 +1,111 @@
+<!doctype html>
+<html id="ng-app" lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>Fevi</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/static/css/boot-fevi.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script src="/static/js/3dSideMenu.js"></script>
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39699634-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</head>
+<body>
+    <div id="containers">
+        <div class="header-bar">
+            <div class="left-menu">
+                <i class="fa fa-bars fa-2"></i>
+            </div>
+            <img src="/static/img/theme/main_menu_trend.png"/>
+            <div class="right-menu">
+                <i class="fa fa-star fa-2"></i>
+            </div>
+        </div>
+        <div class="container">
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+            <h1>bbb</h1>
+        </div>
+    </div>
+
+    <div id="leftMenu" style="position: absolute;top: 0px;left: 0px;">
+        <img class="title" src="/static/img/theme/left_menu_title.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/left_menu_trend.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/left_menu_music.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/left_menu_sports.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/left_menu_lol.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+    </div>
+    <div id="rightMenu" style="position:absolute;right:0;top:50px;">
+        <img class="title" src="/static/img/theme/mypage.png"/>
+        <input type="text" class="search form-control" /><i class="fa fa-search search-icon"></i>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/right_menu_favorite.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+        <img class="menu" src="/static/img/theme/right_menu_contact.png"/>
+        <img class="bar" src="/static/img/theme/left_menu_bar.png"/>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        var leftMenuElement = document.getElementById("leftMenu"),
+            mainPageElement = document.getElementById("containers");
+        var sideMenu = new SideMenu(leftMenuElement, mainPageElement, {position: "left", display:"3d"});
+
+        $('.left-menu').click(function() {
+            sideMenu.toggle();
+        });
+
+        $('.right-menu').click(function() {
+            $('#rightMenu').toggle();
+        });
+    </script>
+</body>
+</html>

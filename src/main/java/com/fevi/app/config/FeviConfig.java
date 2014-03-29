@@ -1,12 +1,11 @@
 package com.fevi.app.config;
 
-import com.fevi.app.filter.SupportBrowserFilter;
 import org.apache.catalina.connector.Connector;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -14,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 /**
  * Created by bungubbang
@@ -22,7 +24,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
+@ComponentScan(basePackages = "com.fevi.app.web")
 public class FeviConfig extends WebMvcConfigurerAdapter {
+
+    private static final String THYMELEAF_CHARACTER_ENCODING = "utf-8";
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
          configurer.defaultContentType(MediaType.APPLICATION_JSON)
@@ -44,11 +50,6 @@ public class FeviConfig extends WebMvcConfigurerAdapter {
         return characterEncodingFilter;
     }
 
-//    @Bean
-//    public SupportBrowserFilter supportBrowserFilter() {
-//        return new SupportBrowserFilter();
-//    }
-
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(8080);
@@ -61,4 +62,5 @@ public class FeviConfig extends WebMvcConfigurerAdapter {
         });
         return factory;
     }
+
 }

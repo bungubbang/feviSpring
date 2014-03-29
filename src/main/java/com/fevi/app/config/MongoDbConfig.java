@@ -5,6 +5,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoURI;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**

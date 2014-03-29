@@ -113,6 +113,21 @@
                     is_responsive: true
                 });
 
+                var play = function(div) {
+
+                    var parent = $(div).parent();
+                    var data = parent.parent().children();
+                    var id = data[0].value;
+                    var source = $(data[1]).attr('href');
+
+                    if(isAndroid()) {
+                        feviJs.play(source);
+                    } else {
+                        playWeb(div, id, source, parent);
+                    }
+
+                }
+
                 var share = function() {
                     if(isAndroid()) {
                         card.description = card.description.substr(0,30) + "...";
