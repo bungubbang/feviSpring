@@ -176,7 +176,9 @@ var initCard = function(Cards, $scope) {
         if(type ==='cards') {
             $scope.cards = getNewCards(Cards, $scope, 0);
         } else if(type === 'favorite') {
-            $scope.cards = getFavoriteCards(Cards, $scope, 0);
+            $scope.cards = getFavoriteCards(Cards, $scope);
+        } else if(type === 'weekly') {
+            $scope.cards = getWeeklyCards(Cards, $scope);
         }
     });
 }
@@ -204,6 +206,16 @@ var getFavoriteCards = function(Cards, $scope) {
         alert('즐겨찾기 항목이 없습니다.');
         history.back();
     }
+}
+
+var getWeeklyCards = function(Cards, $scope) {
+    $.get('/api/weekly/trend', function(cards){
+        for(i in cards.content) {
+            cardHtml(cards.content[i]);
+        }
+        $scope.$broadcast('scroll.resize');
+        checkFavorite(cards, favorite);
+    });
 }
 
 var addCards = function(Cards, $scope, Loading) {

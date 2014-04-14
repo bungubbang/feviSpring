@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,5 +64,15 @@ public class ApiController {
         return userRepository.save(byUid);
     }
 
+    @RequestMapping(value = "/weekly/{menu}", method = RequestMethod.GET)
+    public Page<Card> weekly(@PathVariable String menu) {
+        PageRequest pageRequest = new PageRequest(0, PAGE_SIZE, new Sort(Sort.Direction.DESC, "likes_size"));
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.add(Calendar.DATE, -7);
 
+
+        return cardRepository.findWeekly(formatter.format(cal.getTime()), menu, pageRequest);
+    }
 }

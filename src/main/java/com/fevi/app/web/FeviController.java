@@ -93,6 +93,13 @@ public class FeviController {
         return "contact";
     }
 
+    @RequestMapping("/weekly")
+    public String weekly(Model model) {
+        model.addAttribute("title", "weekly");
+        model.addAttribute("type", "weekly");
+        return "cards";
+    }
+
     @RequestMapping("/not_support")
     public String not_support() {
         return "not_support";

@@ -21,4 +21,7 @@ public interface CardRepository extends MongoRepository<Card, String> {
 
     @Query("{id: { $in : ?0 } }")
     public List<Card> findByListId(List<String> keyword);
+
+    @Query("{created_time: {$gt: ?0 }, category: ?1 }")
+    public Page<Card> findWeekly(String start, String menu, Pageable pageable);
 }
